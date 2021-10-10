@@ -24,34 +24,39 @@
     window['react-router-dom'] = window.ReactRouterDOM;
     window['styled-components'] = window.styled;
 
-    const result1 = "YES,NO,NO";
-    const result2 = '24531';
     const result3 = 'foo1foobar002foobar100foobar100';
 
     const checkJuniorLevel = ({ userName, task1, task2, task3 }) => {
-        const isFirstCorrect = task1 ? [task1([25, 25, 50]), task1([25, 100]), task1([25, 25, 50, 50, 100])].join(',') === result1 : false;
+        const isFirstCorrect = task1 ? task1(
+                [[1, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+                 [1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+                 [1, 0, 1, 0, 1, 1, 1, 0, 1, 0],
+                 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+                 [0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+                 [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]) : false;
+
+
+        const queues1 = [[], [], [1,1], [], [], [], []];
+        const queues2 = [[], [3], [4], [], [5], [], []];
+        const queues3 = [[], [0], [], [], [2], [3], []];
 
         const isSecondConrrect = task2 ?
-            [
-                task2(['0','1']),
-                task2(['01','02','03']),
-                task2(['012','0123','01234']),
-                task2(['0123456789','0123987654','0123987456','2365498756','2365498765'])
-            ].join('') === result2 : false;
+            task2(queues1, 5)?.join('') === '0210' &&
+            task2(queues2, 5)?.join('') === '0123450' &&
+            task2(queues2, 5)?.join('') === '0543210' : false;
 
 
-        const isThirdCorrect = task3 ? [
-            task3('foo'),
-            task3('foobar001'),
-            task3('foobar99'),
-            task3('foobar099'),
-        ].join('') === result3 : false;
+        const isThirdCorrect = task3 ? task3([6, 8, 30]) === 14 && task3([6, 9, 21]) === 9 : false;
 
         return isFirstCorrect && isSecondConrrect && isThirdCorrect && userName;
     };
 
     const getQRCode = async (userName) => {
-        fetch(`http://api.qrserver.com/v1/create-qr-code/?data=FC_Raiff_Middle_JS__508${userName.charCodeAt(0)}rua91!&size=100x100`)
+        fetch(`http://api.qrserver.com/v1/create-qr-code/?data=FC_Raiff_Middle_JS__508${userName}rua91!&size=100x100`)
             .then(async (result) => {
                 const blobResult = await result.blob();
                 const newBlob = new Blob([blobResult]);
@@ -77,11 +82,11 @@
                     .then(code => eval(code))
                     .then(() => {
                         const result = checkJuniorLevel(window['exercise']);
-
                         const userName = window['exercise'] && window['exercise'].userName;
+                        const decodedUserName = userName.split('').map(item => item.charCodeAt(0)).join('|');
 
                         if (result) {
-                            getQRCode(userName);
+                            getQRCode(decodedUserName);
                         }
                     })
                     .catch(console.log);
