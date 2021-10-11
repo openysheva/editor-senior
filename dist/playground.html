@@ -39,6 +39,8 @@
                  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]) : false;
 
+        console.log({ isFirstCorrect });
+
 
         const queues1 = [[], [], [1,1], [], [], [], []];
         const queues2 = [[], [3], [4], [], [5], [], []];
@@ -49,8 +51,12 @@
             task2(queues2, 5)?.join('') === '0123450' &&
             task2(queues2, 5)?.join('') === '0543210' : false;
 
+        console.log({ isSecondConrrect })
+
 
         const isThirdCorrect = task3 ? task3([6, 8, 30]) === 14 && task3([6, 9, 21]) === 9 : false;
+
+        console.log({ isThirdCorrect });
 
         return isFirstCorrect && isSecondConrrect && isThirdCorrect && userName;
     };
