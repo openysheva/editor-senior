@@ -62,7 +62,7 @@
     };
 
     const getQRCode = async (userName) => {
-        fetch(`http://api.qrserver.com/v1/create-qr-code/?data=FC_Raiff_Middle_JS__508${userName}rua91!&size=100x100`)
+        fetch(`https://api.qrserver.com/v1/create-qr-code/?data=FC_Raiff_Middle_JS__508${userName}rua91!&size=100x100`)
             .then(async (result) => {
                 const blobResult = await result.blob();
                 const newBlob = new Blob([blobResult]);
